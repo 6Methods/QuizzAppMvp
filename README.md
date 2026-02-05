@@ -27,23 +27,23 @@ A real-time quiz application built with Next.js, Socket.IO, Prisma, and PostgreS
 
 ## Quick Start
 
-### 1. Clone and Setup
+### 1. Setup
 
 ```bash
-# Copy environment file
+# Создаём env
 cp .env.example .env
 ```
 
 ### 2. Start Database
 
 ```bash
-# Start PostgreSQL container
+# Заводим постгре контейнер. Нужен Docker Desktop либо завести постгре бд локально (Добавить пароль и адрес в env)
 pnpm db:up
 # or
 npm run db:up
 ```
 
-### 3. Install Dependencies
+### 3. Зависимости
 
 ```bash
 pnpm install
@@ -51,51 +51,37 @@ pnpm install
 npm install
 ```
 
-### 4. Setup Database
+### 4. Создаём таблицы Prisma ORM
 
 ```bash
-# Generate Prisma client
+# Клиент призмы
 pnpm prisma:generate
 
-# Run migrations
+# Миграции
 pnpm prisma:migrate
 
-# Seed database with test data
+# Заполняем бд мок данными
 pnpm prisma:seed
 ```
 
-### 5. Start Development Server
+### 5. Дев
 
 ```bash
 pnpm dev
 ```
 
-This starts both Next.js (port 3000) and Socket.IO server (port 3001) concurrently.
+Next.js (port 3000) Socket.IO server (port 3001) соответственно.
 
 ## Test Accounts
 
-After seeding, you can use these accounts:
+После заполнения мок данными креды на аккануты:
 
 | Role        | Email                | Password |
 | ----------- | -------------------- | -------- |
 | Organizer   | organizer@test.com   | 123456   |
 | Participant | participant@test.com | 123456   |
 
-## Available Scripts
-
-| Script                 | Description                                |
-| ---------------------- | ------------------------------------------ |
-| `pnpm dev`             | Start Next.js and Socket.IO in development |
-| `pnpm build`           | Build for production                       |
-| `pnpm start`           | Start production server                    |
-| `pnpm db:up`           | Start PostgreSQL container                 |
-| `pnpm db:down`         | Stop PostgreSQL container                  |
-| `pnpm prisma:generate` | Generate Prisma client                     |
-| `pnpm prisma:migrate`  | Run database migrations                    |
-| `pnpm prisma:seed`     | Seed database                              |
-| `pnpm prisma:studio`   | Open Prisma Studio                         |
-
-## Project Structure
+## Структура
 
 ```
 /app                    # Next.js App Router pages
@@ -161,33 +147,33 @@ After seeding, you can use these accounts:
 
 ### Authentication
 
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login
-- `POST /api/auth/logout` - Logout
-- `GET /api/auth/me` - Get current user
+- `POST /api/auth/register` - Регистрация
+- `POST /api/auth/login` - Логин
+- `POST /api/auth/logout` - Выход
+- `GET /api/auth/me` - Получить данные юзера
 
 ### Quizzes
 
-- `GET /api/quizzes` - List quizzes
-- `POST /api/quizzes` - Create quiz
-- `GET /api/quizzes/:id` - Get quiz
-- `PATCH /api/quizzes/:id` - Update quiz
-- `DELETE /api/quizzes/:id` - Delete quiz
-- `POST /api/quizzes/:id/questions` - Add question
+- `GET /api/quizzes` - Список квизов
+- `POST /api/quizzes` - Создать квиз
+- `GET /api/quizzes/:id` - Получить квиз
+- `PATCH /api/quizzes/:id` - Обновить квиз
+- `DELETE /api/quizzes/:id` - Удалить
+- `POST /api/quizzes/:id/questions` - Добавить вопрос в квиз
 
 ### Questions
 
-- `PATCH /api/questions/:id` - Update question
-- `DELETE /api/questions/:id` - Delete question
+- `PATCH /api/questions/:id` - Обновить вопрос
+- `DELETE /api/questions/:id` - Удалить вопрос
 
 ### Sessions
 
-- `GET /api/sessions` - List sessions
-- `POST /api/sessions` - Create session
-- `POST /api/sessions/join` - Join by room code
-- `GET /api/sessions/:id/results` - Get results
+- `GET /api/sessions` - Список сессий
+- `POST /api/sessions` - Создать сессию
+- `POST /api/sessions/join` - Зайти по коду комнаты на квиз
+- `GET /api/sessions/:id/results` - Результаты
 
-## Environment Variables
+## ENV переменные
 
 | Variable                 | Description                               | Default                 |
 | ------------------------ | ----------------------------------------- | ----------------------- |
@@ -195,6 +181,18 @@ After seeding, you can use these accounts:
 | `SESSION_SECRET`         | Secret for session encryption (32+ chars) | -                       |
 | `NEXT_PUBLIC_SOCKET_URL` | Socket.IO server URL                      | `http://localhost:3001` |
 | `SOCKET_PORT`            | Socket.IO server port                     | `3001`                  |
+
+
+# Задеплоить можно с Vercel и Railway
+
+Так как у нас и веб сервер и вебсокеты на разных портах + хост бд
+
+```
+Next.js → Vercel
+Socket.IO → Railway / Render / Fly.io / VPS
+PostgreSQL → Vercel Postgres / Supabase / Neon
+```
+
 
 ## License
 

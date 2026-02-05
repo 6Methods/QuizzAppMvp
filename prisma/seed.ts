@@ -1,10 +1,10 @@
 import { PrismaClient, Role, QuestionType } from "@prisma/client";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Seeding database...");
+  console.log("Seeding database");
 
   const passwordHash = await bcrypt.hash("123456", 10);
 
@@ -18,7 +18,7 @@ async function main() {
     },
   });
 
-  console.log("✅ Created organizer:", organizer.email);
+  console.log("Created organizer:", organizer.email);
 
   const participant = await prisma.user.upsert({
     where: { email: "participant@test.com" },
@@ -30,7 +30,7 @@ async function main() {
     },
   });
 
-  console.log("✅ Created participant:", participant.email);
+  console.log("Created participant:", participant.email);
 
   const existingQuiz = await prisma.quiz.findFirst({
     where: { ownerId: organizer.id },
@@ -83,20 +83,20 @@ async function main() {
       },
     });
 
-    console.log("✅ Created sample quiz:", quiz.title);
+    console.log("Created sample quiz:", quiz.title);
   } else {
-    console.log("ℹ️ Sample quiz already exists");
+    console.log("Sample quiz already exists");
   }
 
-  console.log("🎉 Seeding completed!");
-  console.log("\n📋 Test accounts:");
+  console.log("Seeding completed!");
+  console.log("\nTest accounts:");
   console.log("   Organizer: organizer@test.com / 123456");
   console.log("   Participant: participant@test.com / 123456");
 }
 
 main()
   .catch((e) => {
-    console.error("❌ Seeding failed:", e);
+    console.error("Seeding failed:", e);
     process.exit(1);
   })
   .finally(async () => {

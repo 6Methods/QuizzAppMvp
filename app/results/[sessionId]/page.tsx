@@ -14,9 +14,8 @@ import { Leaderboard } from "@/src/ui/components/Leaderboard";
 export default async function ResultsPage({
   params,
 }: {
-  params: Promise<{ sessionId: string }>;
+  params: { sessionId: string };
 }) {
-  const resolvedParams = await params;
   const user = await getCurrentUser();
 
   if (!user) {
@@ -24,23 +23,23 @@ export default async function ResultsPage({
   }
 
   const [session, stats, userScore, userAnswers] = await Promise.all([
-    getSessionResults(resolvedParams.sessionId),
-    getSessionStats(resolvedParams.sessionId),
-    getUserScore(resolvedParams.sessionId, user.id),
-    getUserAnswers(resolvedParams.sessionId, user.id),
+    getSessionResults(params.sessionId),
+    getSessionStats(params.sessionId),
+    getUserScore(params.sessionId, user.id),
+    getUserAnswers(params.sessionId, user.id),
   ]);
 
   if (!session) {
     redirect("/dashboard");
   }
 
-  const leaderboard = session.scores.map((s, idx) => ({
+  const leaderboard = session.scores.map((s: any, idx: number) => ({
     rank: idx + 1,
     email: s.user.email,
     points: s.points,
   }));
 
-  const userRank = leaderboard.findIndex((e) => e.email === user.email) + 1;
+  const userRank = leaderboard.findIndex((e: any) => e.email === user.email) + 1;
 
   return (
     <div className="min-h-screen p-8 bg-gray-50">
@@ -74,7 +73,7 @@ export default async function ResultsPage({
             <div className="text-4xl mb-2">✅</div>
             <p className="text-gray-500 text-sm">Correct Answers</p>
             <p className="text-3xl font-bold">
-              {userAnswers.filter((a) => a.isCorrect).length} /{" "}
+              {userAnswers.filter((a: any) => a.isCorrect).length} /{" "}
               {userAnswers.length}
             </p>
           </Card>
@@ -120,7 +119,7 @@ export default async function ResultsPage({
           <Card variant="bordered" className="mt-8">
             <h2 className="text-xl font-semibold mb-4">Your Answers</h2>
             <div className="space-y-3">
-              {userAnswers.map((answer) => (
+              {userAnswers.map((answer: any) => (
                 <div
                   key={answer.id}
                   className={`p-4 rounded-lg border-2 ${

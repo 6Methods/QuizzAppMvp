@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/src/ui/components/Button";
@@ -35,9 +35,8 @@ interface Quiz {
 export default function EditQuizPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const resolvedParams = use(params);
   const router = useRouter();
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,11 +45,11 @@ export default function EditQuizPage({
 
   useEffect(() => {
     fetchQuiz();
-  }, [resolvedParams.id]);
+  }, [params.id]);
 
   const fetchQuiz = async () => {
     try {
-      const res = await fetch(`/api/quizzes/${resolvedParams.id}`);
+      const res = await fetch(`/api/quizzes/${params.id}`);
       const data = await res.json();
       if (data.success) {
         setQuiz(data.data);

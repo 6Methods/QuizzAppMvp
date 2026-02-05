@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/src/ui/hooks/useSession";
 import { Button } from "@/src/ui/components/Button";
@@ -30,9 +30,8 @@ interface SessionData {
 export default function HostPage({
   params,
 }: {
-  params: Promise<{ sessionId: string }>;
+  params: { sessionId: string };
 }) {
-  const resolvedParams = use(params);
   const router = useRouter();
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,11 +51,11 @@ export default function HostPage({
     nextQuestion,
     revealAnswer,
     finishSession,
-  } = useSession(resolvedParams.sessionId);
+  } = useSession(params.sessionId);
 
   useEffect(() => {
     fetchSession();
-  }, [resolvedParams.sessionId]);
+  }, [params.sessionId]);
 
   useEffect(() => {
     if (isConnected && sessionData?.roomCode && !joined) {
@@ -66,7 +65,7 @@ export default function HostPage({
 
   const fetchSession = async () => {
     try {
-      const res = await fetch(`/api/sessions/${resolvedParams.sessionId}`);
+      const res = await fetch(`/api/sessions/${params.sessionId}`);
       const data = await res.json();
 
       if (data.success) {
@@ -273,7 +272,7 @@ export default function HostPage({
                 <div className="flex justify-center gap-3">
                   <Button
                     onClick={() =>
-                      router.push(`/results/${resolvedParams.sessionId}`)
+                      router.push(`/results/${params.sessionId}`)
                     }
                   >
                     View Results

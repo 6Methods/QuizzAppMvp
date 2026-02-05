@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/src/ui/hooks/useSession";
 import { Card } from "@/src/ui/components/Card";
@@ -16,9 +16,8 @@ interface SessionInfo {
 export default function PlayPage({
   params,
 }: {
-  params: Promise<{ sessionId: string }>;
+  params: { sessionId: string };
 }) {
-  const resolvedParams = use(params);
   const router = useRouter();
   const [userEmail, setUserEmail] = useState<string>("");
   const [sessionInfo, setSessionInfo] = useState<SessionInfo | null>(null);
@@ -37,11 +36,11 @@ export default function PlayPage({
     clearError,
     joinSession,
     submitAnswer,
-  } = useSession(resolvedParams.sessionId);
+  } = useSession(params.sessionId);
 
   useEffect(() => {
     fetchData();
-  }, [resolvedParams.sessionId]);
+  }, [params.sessionId]);
 
   useEffect(() => {
     if (isConnected && sessionInfo?.roomCode && !joined) {
@@ -53,7 +52,7 @@ export default function PlayPage({
     try {
       const [userRes, sessionRes] = await Promise.all([
         fetch("/api/auth/me"),
-        fetch(`/api/sessions/${resolvedParams.sessionId}`),
+        fetch(`/api/sessions/${params.sessionId}`),
       ]);
 
       const userData = await userRes.json();
@@ -210,7 +209,7 @@ export default function PlayPage({
 
             <button
               onClick={() =>
-                router.push(`/results/${resolvedParams.sessionId}`)
+                router.push(`/results/${params.sessionId}`)
               }
               className="text-primary-600 hover:underline"
             >

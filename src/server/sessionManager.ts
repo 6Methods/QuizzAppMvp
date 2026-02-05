@@ -87,7 +87,7 @@ export class SessionManager {
 
     const roomName = this.getRoomName(sessionId);
     this.io.to(roomName).emit("session:lobbyUpdate", {
-      participants: participants.map((p) => ({
+      participants: participants.map((p: { user: { id: string, email: string }, joinedAt: Date }) => ({
         id: p.user.id,
         email: p.user.email,
         joinedAt: p.joinedAt,
@@ -177,7 +177,7 @@ export class SessionManager {
       isMulti: question.isMulti,
       timeLimitSec: question.timeLimitSec,
       points: question.points,
-      options: question.options.map((o) => ({
+      options: question.options.map((o: { id: string, text: string }) => ({
         id: o.id,
         text: o.text,
       })),
@@ -254,8 +254,8 @@ export class SessionManager {
     }
 
     const correctOptionIds = question.options
-      .filter((o) => o.isCorrect)
-      .map((o) => o.id);
+      .filter((o: { isCorrect: boolean }) => o.isCorrect)
+      .map((o: { id: string }) => o.id);
 
     let isCorrect: boolean;
     if (question.isMulti) {
@@ -305,7 +305,7 @@ export class SessionManager {
 
     const roomName = this.getRoomName(sessionId);
     this.io.to(roomName).emit("leaderboard:update", {
-      leaderboard: scores.map((s, idx) => ({
+      leaderboard: scores.map((s: { user: { email: string }, points: number }, idx: number) => ({
         rank: idx + 1,
         email: s.user.email,
         points: s.points,
@@ -316,23 +316,21 @@ export class SessionManager {
   async revealAnswer(sessionId: string): Promise<{ error?: string }> {
     const session = await this.prisma.session.findUnique({
       where: { id: sessionId },
-      include: {
-        quiz: {
-          include: {
-            questions: {
-              where: { order: session?.currentQuestionOrder ?? -1 },
-              include: { options: true },
-            },
-          },
-        },
-      },
+      select: { currentQuestionOrder: true, quizId: true },
     });
 
     if (!session) {
       return { error: "Session not found" };
     }
 
-    const question = session.quiz.questions[0];
+    const question = await this.prisma.question.findFirst({
+      where: {
+        quizId: session.quizId,
+        order: session.currentQuestionOrder ?? -1,
+      },
+      include: { options: true },
+    });
+
     if (!question) {
       return { error: "Question not found" };
     }
@@ -341,8 +339,8 @@ export class SessionManager {
     this.io.to(roomName).emit("answer:reveal", {
       questionId: question.id,
       correctOptionIds: question.options
-        .filter((o) => o.isCorrect)
-        .map((o) => o.id),
+        .filter((o: { isCorrect: boolean }) => o.isCorrect)
+        .map((o: { id: string }) => o.id),
     });
 
     return {};
