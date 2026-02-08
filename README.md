@@ -1,15 +1,12 @@
 # Realtime Quiz App
 
-A real-time quiz application built with Next.js, Socket.IO, Prisma, and PostgreSQL.
-
 ## Features
 
-- **User Authentication**: Email/password registration and login with cookie-based sessions
-- **Role-based Access**: ORGANIZER (create quizzes, host sessions) and PARTICIPANT (join and play)
-- **Quiz Management**: Create quizzes with text and image questions, multiple choice options
-- **Real-time Sessions**: Live quiz sessions with synchronized timers and instant feedback
-- **Live Leaderboard**: Score updates in real-time after each question
-- **Results & Analytics**: Detailed session statistics and individual performance tracking
+- **Авторизация**
+- **Разделение функционала по ролям**
+- **Создание квизов**
+- **Таблица лидеров**
+- **Результаты квиза и аналитки**
 
 ## Tech Stack
 
@@ -22,24 +19,24 @@ A real-time quiz application built with Next.js, Socket.IO, Prisma, and PostgreS
 ## Prerequisites
 
 - Node.js 18+
-- Docker and Docker Compose
-- pnpm (recommended) or npm
+- Docker и Docker Compose
+- pnpm или npm
 
-## Quick Start
+## Запуск
 
-### 1. Setup
+### 1. Установка
 
 ```bash
 # Создаём env
 cp .env.example .env
 ```
 
-### 2. Start Database
+### 2. Инициализация базы данных
 
 ```bash
-# Заводим постгре контейнер. Нужен Docker Desktop либо завести постгре бд локально (Добавить пароль и адрес в env)
+# Заводим контейнер. Нужен Docker Desktop либо завести постгре бд локально (Добавить пароль и адрес в env)
 pnpm db:up
-# or
+# или
 npm run db:up
 ```
 
@@ -117,7 +114,7 @@ Next.js (port 3000) Socket.IO server (port 3001) соответственно.
   seed.ts               # Seed script
 ```
 
-## Socket.IO Events
+## Socket.IO События
 
 ### Client -> Server
 
