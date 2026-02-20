@@ -2,25 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 245, 247, 250;
-  --background-end-rgb: 255, 255, 255;
-}
+@layer base {
+  :root {
+    --c-ink-dark: #1E2336;
+    --c-ink: #293250;
+    --c-ink-light: #4D5B8C;
+    --c-accent: #5664F5;
+    --c-accent-soft: #EEF0FF;
+    --c-page: #F4F6F9;
+    --c-success: #4CD964;
+    --c-error: #FF3B30;
+    --c-coral: #FF9F5A;
+    --shadow-card: 0 12px 40px rgba(41, 50, 80, 0.08);
+    --shadow-float: 0 8px 24px rgba(86, 100, 245, 0.25);
+  }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-  min-height: 100vh;
+  body {
+    background-color: var(--c-page);
+    color: var(--c-ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .pattern-stripes {
+    background-image: linear-gradient(
+      45deg,
+      rgba(86, 100, 245, 0.05) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(86, 100, 245, 0.05) 50%,
+      rgba(86, 100, 245, 0.05) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 20px 20px;
+  }
+
+  .progress-stripes::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 10px 10px;
   }
 }

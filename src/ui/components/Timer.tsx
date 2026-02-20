@@ -42,9 +42,9 @@ export function Timer({ endsAt, onTimeUp, className }: TimerProps) {
     <div
       className={cn(
         "text-4xl font-bold tabular-nums transition-colors",
-        isLow && !isCritical && "text-yellow-500",
-        isCritical && "text-red-500 animate-pulse",
-        !isLow && "text-gray-800",
+        isLow && !isCritical && "text-coral",
+        isCritical && "text-error animate-pulse",
+        !isLow && "text-ink",
         className
       )}
     >

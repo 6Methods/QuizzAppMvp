@@ -20,6 +20,8 @@ interface QuestionCardProps {
   selectedIds?: string[];
 }
 
+const ANSWER_KEYS = ["A", "B", "C", "D", "E", "F", "G", "H"];
+
 export function QuestionCard({
   prompt,
   imageUrl,
@@ -57,54 +59,68 @@ export function QuestionCard({
 
     if (isRevealed) {
       if (isCorrect) {
-        return "border-green-500 bg-green-50 text-green-800";
+        return "border-success bg-success-soft text-green-800";
       }
       if (isSelected && !isCorrect) {
-        return "border-red-500 bg-red-50 text-red-800";
+        return "border-error bg-error-soft text-red-800";
       }
-      return "border-gray-200 bg-gray-50 text-gray-500";
+      return "border-transparent bg-page text-ink-light";
     }
 
     if (isSelected) {
-      return "border-primary-500 bg-primary-50 text-primary-800";
+      return "border-primary-500 bg-primary-500 text-white shadow-float";
     }
 
-    return "border-gray-200 hover:border-primary-300 hover:bg-primary-50";
+    return "border-transparent bg-page hover:bg-white hover:border-primary-500 hover:-translate-y-0.5 hover:shadow-md";
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">{prompt}</h2>
+    <div className="bg-white rounded-3xl shadow-card p-8 max-w-2xl mx-auto">
+      <h2 className="text-2xl font-semibold text-ink text-center mb-8">
+        {prompt}
+      </h2>
 
       {imageUrl && (
-        <div className="mb-4 flex justify-center">
+        <div className="mb-6 flex justify-center">
           <img
             src={imageUrl}
             alt="Question"
-            className="max-h-64 rounded-lg object-contain"
+            className="max-h-64 rounded-2xl object-contain"
           />
         </div>
       )}
 
       {isMulti && !isRevealed && (
-        <p className="text-sm text-gray-500 mb-3">Select all that apply</p>
+        <p className="text-sm text-ink-light mb-4 text-center">
+          Select all that apply
+        </p>
       )}
 
-      <div className="space-y-3 mb-6">
-        {options.map((option) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        {options.map((option, idx) => (
           <button
             key={option.id}
             onClick={() => toggleOption(option.id)}
             disabled={disabled || isRevealed}
             className={cn(
-              "w-full p-4 text-left border-2 rounded-lg transition-all",
+              "p-4 text-left border-2 rounded-2xl transition-all duration-200 flex items-center font-medium",
               getOptionStyle(option.id),
               !disabled && !isRevealed && "cursor-pointer"
             )}
           >
-            <span className="font-medium">{option.text}</span>
+            <span
+              className={cn(
+                "w-7 h-7 rounded-full flex items-center justify-center mr-4 text-xs font-bold shrink-0",
+                selected.includes(option.id) && !isRevealed
+                  ? "bg-white/20 text-white"
+                  : "bg-black/5"
+              )}
+            >
+              {ANSWER_KEYS[idx] || idx + 1}
+            </span>
+            {option.text}
             {isRevealed && revealedCorrectIds?.includes(option.id) && (
-              <span className="ml-2">✓</span>
+              <span className="ml-auto">✓</span>
             )}
           </button>
         ))}
@@ -115,6 +131,7 @@ export function QuestionCard({
           onClick={handleSubmit}
           disabled={selected.length === 0 || disabled}
           className="w-full"
+          size="lg"
         >
           Submit Answer
         </Button>

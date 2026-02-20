@@ -23,22 +23,23 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+      "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200 ease-[cubic-bezier(0.2,0.8,0.2,1)] focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none";
 
     const variants = {
       primary:
-        "bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500",
+        "bg-primary-500 text-white shadow-float hover:shadow-float-lg hover:-translate-y-0.5 focus:ring-primary-400",
       secondary:
-        "bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500",
-      danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
+        "bg-transparent text-ink border-2 border-ink/10 hover:border-primary-500 hover:text-primary-500 hover:bg-white focus:ring-primary-400",
+      danger:
+        "bg-error text-white hover:bg-red-600 hover:-translate-y-0.5 focus:ring-red-400",
       ghost:
-        "bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500",
+        "bg-transparent text-ink-light hover:bg-primary-50 hover:text-primary-500 focus:ring-primary-400",
     };
 
     const sizes = {
-      sm: "px-3 py-1.5 text-sm",
-      md: "px-4 py-2 text-base",
-      lg: "px-6 py-3 text-lg",
+      sm: "px-4 py-1.5 text-sm gap-1.5",
+      md: "px-6 py-2.5 text-base gap-2",
+      lg: "px-8 py-3.5 text-lg gap-2",
     };
 
     return (

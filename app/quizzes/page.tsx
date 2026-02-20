@@ -19,12 +19,18 @@ export default async function QuizzesPage() {
   const quizzes = await getQuizzesByOwner(user.id);
 
   return (
-    <div className="min-h-screen p-8">
-      <div className="max-w-4xl mx-auto">
-        <header className="flex items-center justify-between mb-8">
+    <div className="min-h-screen">
+      <header className="flex justify-between items-center px-8 py-6 max-w-[1200px] mx-auto w-full">
+        <div className="font-bold text-2xl text-ink flex items-center gap-2">
+          <span className="text-primary-500">●</span> QuizFlow
+        </div>
+      </header>
+
+      <main className="px-8 pb-12 max-w-[1000px] mx-auto">
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">My Quizzes</h1>
-            <p className="text-gray-600">Manage and create quizzes</p>
+            <h1 className="text-3xl font-bold text-ink">My Quizzes</h1>
+            <p className="text-ink-light">Manage and create quizzes</p>
           </div>
           <div className="flex gap-3">
             <Link href="/dashboard">
@@ -34,13 +40,13 @@ export default async function QuizzesPage() {
               <Button>Create Quiz</Button>
             </Link>
           </div>
-        </header>
+        </div>
 
         {quizzes.length === 0 ? (
-          <Card variant="bordered" className="text-center py-12">
+          <Card variant="elevated" className="text-center py-12 pattern-stripes">
             <div className="text-5xl mb-4">📋</div>
-            <h2 className="text-xl font-semibold mb-2">No quizzes yet</h2>
-            <p className="text-gray-600 mb-6">
+            <h2 className="text-xl font-semibold mb-2 text-ink">No quizzes yet</h2>
+            <p className="text-ink-light mb-6">
               Create your first quiz to start hosting sessions
             </p>
             <Link href="/quizzes/new">
@@ -53,15 +59,15 @@ export default async function QuizzesPage() {
               <Card
                 key={quiz.id}
                 variant="bordered"
-                className="hover:shadow-md transition-shadow"
+                className="hover:shadow-card hover:-translate-y-0.5 transition-all"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-xl font-semibold">{quiz.title}</h2>
+                    <h2 className="text-xl font-semibold text-ink">{quiz.title}</h2>
                     {quiz.description && (
-                      <p className="text-gray-600 mt-1">{quiz.description}</p>
+                      <p className="text-ink-light mt-1">{quiz.description}</p>
                     )}
-                    <div className="flex gap-4 mt-2 text-sm text-gray-500">
+                    <div className="flex gap-4 mt-2 text-sm text-ink-light">
                       <span>{quiz._count.questions} questions</span>
                       <span>{quiz._count.sessions} sessions</span>
                       <span>
@@ -82,7 +88,7 @@ export default async function QuizzesPage() {
             ))}
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }

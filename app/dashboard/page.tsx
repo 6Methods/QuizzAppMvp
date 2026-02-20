@@ -19,13 +19,29 @@ export default async function DashboardPage() {
   const isOrganizer = user.role === "ORGANIZER";
 
   return (
-    <div className="min-h-screen p-8">
-      <div className="max-w-6xl mx-auto">
-        <header className="flex items-center justify-between mb-8">
+    <div className="min-h-screen">
+      <header className="flex justify-between items-center px-8 py-6 max-w-[1200px] mx-auto w-full">
+        <div className="font-bold text-2xl text-ink flex items-center gap-2">
+          <span className="text-primary-500">●</span> QuizFlow
+        </div>
+        <div className="flex gap-3 items-center">
+          <div className="bg-ink text-white px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-1.5 shadow-md">
+            <span className="text-coral text-xs">★</span> {user.email}
+          </div>
+          <form action="/api/auth/logout" method="POST">
+            <Button type="submit" variant="ghost" size="sm">
+              Sign Out
+            </Button>
+          </form>
+        </div>
+      </header>
+
+      <main className="px-8 pb-12 max-w-[1200px] mx-auto">
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600">
-              Welcome, {user.email} ({user.role})
+            <h1 className="text-3xl font-bold text-ink">Dashboard</h1>
+            <p className="text-ink-light">
+              Welcome back, {user.email}
             </p>
           </div>
           <div className="flex gap-3">
@@ -43,20 +59,15 @@ export default async function DashboardPage() {
                 <Button>Join Quiz</Button>
               </Link>
             )}
-            <form action="/api/auth/logout" method="POST">
-              <Button type="submit" variant="ghost">
-                Sign Out
-              </Button>
-            </form>
           </div>
-        </header>
+        </div>
 
         {isOrganizer ? (
           <OrganizerDashboard userId={user.id} />
         ) : (
           <ParticipantDashboard userId={user.id} />
         )}
-      </div>
+      </main>
     </div>
   );
 }
@@ -70,21 +81,21 @@ async function OrganizerDashboard({ userId }: { userId: string }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <Card variant="bordered">
-        <h2 className="text-xl font-semibold mb-4">Recent Quizzes</h2>
+        <h2 className="text-xl font-semibold mb-4 text-ink">Recent Quizzes</h2>
         {quizzes.length === 0 ? (
-          <p className="text-gray-500">
+          <p className="text-ink-light">
             No quizzes yet. Create your first quiz!
           </p>
         ) : (
           <ul className="space-y-3">
-            {quizzes.slice(0, 5).map((quiz) => (
+            {quizzes.slice(0, 5).map((quiz: any) => (
               <li
                 key={quiz.id}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                className="flex items-center justify-between p-3 bg-page rounded-2xl"
               >
                 <div>
-                  <p className="font-medium">{quiz.title}</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="font-medium text-ink">{quiz.title}</p>
+                  <p className="text-sm text-ink-light">
                     {quiz._count.questions} questions | {quiz._count.sessions}{" "}
                     sessions
                   </p>
@@ -106,29 +117,29 @@ async function OrganizerDashboard({ userId }: { userId: string }) {
       </Card>
 
       <Card variant="bordered">
-        <h2 className="text-xl font-semibold mb-4">Recent Sessions</h2>
+        <h2 className="text-xl font-semibold mb-4 text-ink">Recent Sessions</h2>
         {sessions.length === 0 ? (
-          <p className="text-gray-500">No sessions yet. Start hosting!</p>
+          <p className="text-ink-light">No sessions yet. Start hosting!</p>
         ) : (
           <ul className="space-y-3">
-            {sessions.slice(0, 5).map((session) => (
+            {sessions.slice(0, 5).map((session: any) => (
               <li
                 key={session.id}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                className="flex items-center justify-between p-3 bg-page rounded-2xl"
               >
                 <div>
-                  <p className="font-medium">{session.quiz.title}</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="font-medium text-ink">{session.quiz.title}</p>
+                  <p className="text-sm text-ink-light">
                     Code: {session.roomCode} | {session._count.participants}{" "}
                     participants
                   </p>
                   <span
-                    className={`text-xs px-2 py-1 rounded ${
+                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                       session.status === "FINISHED"
-                        ? "bg-gray-200"
+                        ? "bg-ink/10 text-ink-light"
                         : session.status === "LOBBY"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-green-100 text-green-800"
+                        ? "bg-coral/20 text-coral"
+                        : "bg-success-soft text-green-700"
                     }`}
                   >
                     {session.status}
@@ -159,9 +170,9 @@ async function ParticipantDashboard({ userId }: { userId: string }) {
 
   return (
     <div className="grid grid-cols-1 gap-8">
-      <Card variant="elevated" className="text-center py-12">
-        <h2 className="text-2xl font-bold mb-4">Ready to Play?</h2>
-        <p className="text-gray-600 mb-6">
+      <Card variant="elevated" className="text-center py-12 pattern-stripes">
+        <h2 className="text-2xl font-bold mb-4 text-ink">Ready to Play?</h2>
+        <p className="text-ink-light mb-6">
           Enter a room code to join a live quiz session
         </p>
         <Link href="/join">
@@ -170,29 +181,29 @@ async function ParticipantDashboard({ userId }: { userId: string }) {
       </Card>
 
       <Card variant="bordered">
-        <h2 className="text-xl font-semibold mb-4">Your Quiz History</h2>
+        <h2 className="text-xl font-semibold mb-4 text-ink">Your Quiz History</h2>
         {participations.length === 0 ? (
-          <p className="text-gray-500">
+          <p className="text-ink-light">
             No quiz history yet. Join a quiz to get started!
           </p>
         ) : (
           <ul className="space-y-3">
-            {participations.map((p) => (
+            {participations.map((p: any) => (
               <li
                 key={p.id}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                className="flex items-center justify-between p-3 bg-page rounded-2xl"
               >
                 <div>
-                  <p className="font-medium">{p.session.quiz.title}</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="font-medium text-ink">{p.session.quiz.title}</p>
+                  <p className="text-sm text-ink-light">
                     Hosted by {p.session.host.email} |{" "}
                     {new Date(p.joinedAt).toLocaleDateString()}
                   </p>
                   <span
-                    className={`text-xs px-2 py-1 rounded ${
+                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                       p.session.status === "FINISHED"
-                        ? "bg-gray-200"
-                        : "bg-green-100 text-green-800"
+                        ? "bg-ink/10 text-ink-light"
+                        : "bg-success-soft text-green-700"
                     }`}
                   >
                     {p.session.status}

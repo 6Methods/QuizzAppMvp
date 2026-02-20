@@ -34,20 +34,20 @@ export function Leaderboard({
 
   return (
     <div
-      className={cn("bg-white rounded-xl shadow-md overflow-hidden", className)}
+      className={cn("bg-white rounded-3xl shadow-card overflow-hidden", className)}
     >
-      <div className="bg-primary-600 px-4 py-3">
+      <div className="bg-ink px-5 py-3.5">
         <h3 className="text-lg font-semibold text-white">Leaderboard</h3>
       </div>
-      <ul className="divide-y divide-gray-200">
+      <ul className="divide-y divide-ink/5">
         {entries.length === 0 ? (
-          <li className="px-4 py-3 text-gray-500 text-center">No scores yet</li>
+          <li className="px-5 py-4 text-ink-light text-center">No scores yet</li>
         ) : (
           entries.map((entry) => (
             <li
               key={entry.email}
               className={cn(
-                "px-4 py-3 flex items-center justify-between transition-colors",
+                "px-5 py-3.5 flex items-center justify-between transition-colors",
                 entry.email === currentUserEmail && "bg-primary-50"
               )}
             >

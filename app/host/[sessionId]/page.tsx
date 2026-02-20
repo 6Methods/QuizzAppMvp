@@ -83,7 +83,7 @@ export default function HostPage({
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Loading session...</p>
+        <p className="text-ink-light">Loading session...</p>
       </div>
     );
   }
@@ -92,7 +92,7 @@ export default function HostPage({
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Card variant="elevated" className="text-center p-8">
-          <p className="text-red-500 mb-4">
+          <p className="text-error mb-4">
             {loadError || "Session not found"}
           </p>
           <Button onClick={() => router.push("/dashboard")}>
@@ -109,35 +109,33 @@ export default function HostPage({
   const totalQuestions = sessionData.quiz.questions.length;
 
   return (
-    <div className="min-h-screen p-8 bg-gray-50">
-      <div className="max-w-6xl mx-auto">
-        <header className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold">{sessionData.quiz.title}</h1>
-            <div className="flex items-center gap-4 mt-1">
-              <span className="text-lg font-mono bg-primary-100 text-primary-800 px-3 py-1 rounded">
-                Room: {sessionData.roomCode}
-              </span>
-              <span
-                className={`px-2 py-1 rounded text-sm ${
-                  isConnected
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800"
-                }`}
-              >
-                {isConnected ? "Connected" : "Disconnected"}
-              </span>
-            </div>
+    <div className="min-h-screen">
+      <header className="flex justify-between items-center px-8 py-6 max-w-[1200px] mx-auto w-full">
+        <div>
+          <h1 className="text-2xl font-bold text-ink">{sessionData.quiz.title}</h1>
+          <div className="flex items-center gap-4 mt-1">
+            <span className="text-lg font-mono bg-primary-50 text-primary-700 px-4 py-1 rounded-full font-semibold">
+              Room: {sessionData.roomCode}
+            </span>
+            <span
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                isConnected
+                  ? "bg-success-soft text-green-700"
+                  : "bg-error-soft text-error"
+              }`}
+            >
+              {isConnected ? "Connected" : "Disconnected"}
+            </span>
           </div>
-          <div className="flex gap-3">
-            <Button variant="ghost" onClick={() => router.push("/dashboard")}>
-              Exit
-            </Button>
-          </div>
-        </header>
+        </div>
+        <Button variant="ghost" onClick={() => router.push("/dashboard")}>
+          Exit
+        </Button>
+      </header>
 
+      <main className="px-8 pb-12 max-w-[1200px] mx-auto">
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg">
+          <div className="mb-4 p-4 bg-error-soft border border-error/20 text-error rounded-2xl">
             {error}
             <button onClick={clearError} className="ml-2 underline">
               Dismiss
@@ -148,15 +146,15 @@ export default function HostPage({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             {(!sessionState || sessionState.status === "LOBBY") && (
-              <Card variant="elevated" className="text-center py-12">
-                <h2 className="text-2xl font-bold mb-4">Waiting for Players</h2>
-                <p className="text-gray-600 mb-2">
+              <Card variant="elevated" className="text-center py-12 pattern-stripes">
+                <h2 className="text-2xl font-bold mb-4 text-ink">Waiting for Players</h2>
+                <p className="text-ink-light mb-2">
                   Share the room code with participants:
                 </p>
-                <p className="text-5xl font-mono font-bold text-primary-600 mb-6">
+                <p className="text-5xl font-mono font-bold text-primary-500 mb-6">
                   {sessionData.roomCode}
                 </p>
-                <p className="text-gray-500 mb-6">
+                <p className="text-ink-light mb-6">
                   {participants.length} participant
                   {participants.length !== 1 ? "s" : ""} joined
                 </p>
@@ -168,7 +166,7 @@ export default function HostPage({
                   Start Quiz
                 </Button>
                 {totalQuestions === 0 && (
-                  <p className="text-red-500 text-sm mt-2">
+                  <p className="text-error text-sm mt-2">
                     Quiz has no questions!
                   </p>
                 )}
@@ -177,17 +175,28 @@ export default function HostPage({
 
             {sessionState?.status === "QUESTION" && currentQuestion && (
               <Card variant="elevated">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-lg font-semibold">
-                    Question {currentQuestion.order} of {totalQuestions}
-                  </span>
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <div className="text-xs font-bold text-ink-light uppercase tracking-wider">
+                      Question {currentQuestion.order} of {totalQuestions}
+                    </div>
+                  </div>
                   <Timer
                     endsAt={currentQuestion.endsAt}
                     onTimeUp={revealAnswer}
                   />
                 </div>
 
-                <h2 className="text-2xl font-bold mb-4">
+                <div className="w-full h-1.5 bg-page rounded-full overflow-hidden mb-6">
+                  <div
+                    className="h-full bg-primary-500 rounded-full relative progress-stripes"
+                    style={{
+                      width: `${(currentQuestion.order / totalQuestions) * 100}%`,
+                    }}
+                  />
+                </div>
+
+                <h2 className="text-2xl font-bold mb-6 text-ink text-center">
                   {currentQuestion.prompt}
                 </h2>
 
@@ -195,15 +204,15 @@ export default function HostPage({
                   <img
                     src={currentQuestion.imageUrl}
                     alt="Question"
-                    className="max-h-64 mx-auto rounded-lg mb-4"
+                    className="max-h-64 mx-auto rounded-2xl mb-6"
                   />
                 )}
 
-                <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="grid grid-cols-2 gap-4 mb-6">
                   {currentQuestion.options.map((option) => (
                     <div
                       key={option.id}
-                      className="p-4 bg-gray-100 rounded-lg font-medium"
+                      className="p-4 bg-page rounded-2xl font-medium text-ink"
                     >
                       {option.text}
                     </div>
@@ -222,24 +231,24 @@ export default function HostPage({
 
             {sessionState?.status === "REVEAL" && currentQuestionData && (
               <Card variant="elevated">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-lg font-semibold">
-                    Question {sessionState.currentQuestionOrder} - Results
-                  </span>
+                <div className="flex items-center justify-between mb-6">
+                  <div className="text-xs font-bold text-ink-light uppercase tracking-wider">
+                    Question {sessionState.currentQuestionOrder} — Results
+                  </div>
                 </div>
 
-                <h2 className="text-2xl font-bold mb-4">
+                <h2 className="text-2xl font-bold mb-6 text-ink text-center">
                   {currentQuestionData.prompt}
                 </h2>
 
-                <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="grid grid-cols-2 gap-4 mb-6">
                   {currentQuestionData.options.map((option) => (
                     <div
                       key={option.id}
-                      className={`p-4 rounded-lg font-medium border-2 ${
+                      className={`p-4 rounded-2xl font-medium border-2 ${
                         option.isCorrect
-                          ? "bg-green-100 border-green-500 text-green-800"
-                          : "bg-gray-100 border-gray-200"
+                          ? "bg-success-soft border-success text-green-800"
+                          : "bg-page border-transparent text-ink-light"
                       }`}
                     >
                       {option.text}
@@ -265,8 +274,8 @@ export default function HostPage({
 
             {sessionState?.status === "FINISHED" && (
               <Card variant="elevated" className="text-center py-12">
-                <h2 className="text-3xl font-bold mb-4">Quiz Finished!</h2>
-                <p className="text-gray-600 mb-6">
+                <h2 className="text-3xl font-bold mb-4 text-ink">Quiz Finished!</h2>
+                <p className="text-ink-light mb-6">
                   Thank you for hosting this quiz session.
                 </p>
                 <div className="flex justify-center gap-3">
@@ -290,19 +299,19 @@ export default function HostPage({
 
           <div className="space-y-6">
             <Card variant="bordered">
-              <h3 className="font-semibold mb-3">
+              <h3 className="font-semibold mb-3 text-ink">
                 Participants ({participants.length})
               </h3>
               <ul className="space-y-2 max-h-48 overflow-y-auto">
                 {participants.length === 0 ? (
-                  <li className="text-gray-500 text-sm">
+                  <li className="text-ink-light text-sm">
                     Waiting for participants...
                   </li>
                 ) : (
                   participants.map((p) => (
                     <li
                       key={p.id}
-                      className="text-sm bg-gray-50 px-3 py-2 rounded"
+                      className="text-sm bg-page px-4 py-2.5 rounded-xl font-medium"
                     >
                       {p.email}
                     </li>
@@ -314,7 +323,7 @@ export default function HostPage({
             {leaderboard.length > 0 && <Leaderboard entries={leaderboard} />}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

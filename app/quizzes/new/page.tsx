@@ -42,14 +42,20 @@ export default function NewQuizPage() {
   };
 
   return (
-    <div className="min-h-screen p-8">
-      <div className="max-w-2xl mx-auto">
-        <header className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Create New Quiz</h1>
+    <div className="min-h-screen">
+      <header className="flex justify-between items-center px-8 py-6 max-w-[1200px] mx-auto w-full">
+        <div className="font-bold text-2xl text-ink flex items-center gap-2">
+          <span className="text-primary-500">●</span> QuizFlow
+        </div>
+      </header>
+
+      <main className="px-8 pb-12 max-w-[700px] mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-ink">Create New Quiz</h1>
           <Link href="/quizzes">
             <Button variant="ghost">Cancel</Button>
           </Link>
-        </header>
+        </div>
 
         <Card variant="elevated">
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -66,7 +72,7 @@ export default function NewQuizPage() {
             <div>
               <label
                 htmlFor="description"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-ink mb-1"
               >
                 Description (optional)
               </label>
@@ -77,22 +83,20 @@ export default function NewQuizPage() {
                 placeholder="Enter quiz description"
                 maxLength={1000}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="w-full px-4 py-2.5 border-2 border-ink/10 rounded-2xl shadow-sm transition-colors focus:outline-none focus:ring-0 focus:border-primary-500"
               />
             </div>
 
             {error && (
-              <p className="text-red-600 text-sm text-center">{error}</p>
+              <p className="text-error text-sm text-center">{error}</p>
             )}
 
-            <div className="flex gap-3">
-              <Button type="submit" isLoading={isLoading} className="flex-1">
-                Create Quiz
-              </Button>
-            </div>
+            <Button type="submit" isLoading={isLoading} className="w-full">
+              Create Quiz
+            </Button>
           </form>
         </Card>
-      </div>
+      </main>
     </div>
   );
 }

@@ -40,75 +40,112 @@ export default async function ResultsPage({
   }));
 
   const userRank = leaderboard.findIndex((e: any) => e.email === user.email) + 1;
+  const correctCount = userAnswers.filter((a: any) => a.isCorrect).length;
+  const accuracy = userAnswers.length > 0
+    ? Math.round((correctCount / userAnswers.length) * 100)
+    : 0;
 
   return (
-    <div className="min-h-screen p-8 bg-gray-50">
-      <div className="max-w-4xl mx-auto">
-        <header className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Quiz Results</h1>
-            <p className="text-gray-600">{session.quiz.title}</p>
+    <div className="min-h-screen">
+      <header className="flex justify-between items-center px-8 py-6 max-w-[1200px] mx-auto w-full">
+        <div className="font-bold text-2xl text-ink flex items-center gap-2">
+          <span className="text-primary-500">●</span> QuizFlow
+        </div>
+        <Link href="/dashboard">
+          <Button variant="ghost">Back to Dashboard</Button>
+        </Link>
+      </header>
+
+      <main className="px-8 pb-12 max-w-[1000px] mx-auto">
+        <section className="bg-white rounded-3xl shadow-card p-8 flex flex-col md:flex-row items-center gap-8 border border-black/5 mb-8">
+          <div className="w-[120px] h-[120px] rounded-full border-[8px] border-primary-500 flex flex-col items-center justify-center shrink-0">
+            <span className="text-[32px] font-extrabold text-ink leading-none">
+              {accuracy}%
+            </span>
+            <span className="text-xs text-ink-light uppercase mt-1">Score</span>
           </div>
-          <Link href="/dashboard">
-            <Button variant="ghost">Back to Dashboard</Button>
-          </Link>
-        </header>
+          <div className="flex-1 text-center md:text-left">
+            <h3 className="text-2xl font-bold text-ink mb-2">
+              {session.quiz.title}
+            </h3>
+            <p className="text-ink-light mb-4">
+              You scored {userScore?.points || 0} XP and answered {correctCount} of{" "}
+              {userAnswers.length} questions correctly.
+            </p>
+            <div className="flex gap-3 justify-center md:justify-start">
+              <div className="w-10 h-10 bg-page rounded-xl flex items-center justify-center text-coral text-lg">
+                ⚡
+              </div>
+              <div className="w-10 h-10 bg-page rounded-xl flex items-center justify-center text-coral text-lg">
+                🎯
+              </div>
+              <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center text-white text-lg">
+                🏆
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 shrink-0">
+            <Link href="/dashboard">
+              <Button size="sm">Play Again</Button>
+            </Link>
+          </div>
+        </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card variant="elevated" className="text-center">
-            <div className="text-4xl mb-2">🏆</div>
-            <p className="text-gray-500 text-sm">Your Rank</p>
-            <p className="text-3xl font-bold">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white p-4 rounded-2xl shadow-soft text-center hover:-translate-y-0.5 transition-transform">
+            <div className="text-2xl font-bold text-ink mb-1">
               {userRank > 0 ? `#${userRank}` : "N/A"}
-            </p>
-          </Card>
-
-          <Card variant="elevated" className="text-center">
-            <div className="text-4xl mb-2">⭐</div>
-            <p className="text-gray-500 text-sm">Your Score</p>
-            <p className="text-3xl font-bold">{userScore?.points || 0}</p>
-          </Card>
-
-          <Card variant="elevated" className="text-center">
-            <div className="text-4xl mb-2">✅</div>
-            <p className="text-gray-500 text-sm">Correct Answers</p>
-            <p className="text-3xl font-bold">
-              {userAnswers.filter((a: any) => a.isCorrect).length} /{" "}
-              {userAnswers.length}
-            </p>
-          </Card>
+            </div>
+            <div className="text-sm text-ink-light">Rank</div>
+          </div>
+          <div className="bg-white p-4 rounded-2xl shadow-soft text-center hover:-translate-y-0.5 transition-transform">
+            <div className="text-2xl font-bold text-ink mb-1">{accuracy}%</div>
+            <div className="text-sm text-ink-light">Accuracy</div>
+          </div>
+          <div className="bg-white p-4 rounded-2xl shadow-soft text-center hover:-translate-y-0.5 transition-transform">
+            <div className="text-2xl font-bold text-ink mb-1">
+              {userScore?.points || 0}
+            </div>
+            <div className="text-sm text-ink-light">Points</div>
+          </div>
+          <div className="bg-white p-4 rounded-2xl shadow-soft text-center hover:-translate-y-0.5 transition-transform">
+            <div className="text-2xl font-bold text-ink mb-1">
+              {correctCount}/{userAnswers.length}
+            </div>
+            <div className="text-sm text-ink-light">Correct</div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
-            <Leaderboard entries={leaderboard} currentUserEmail={user.email} />
-          </div>
+          <Leaderboard entries={leaderboard} currentUserEmail={user.email} />
 
           <Card variant="bordered">
-            <h2 className="text-xl font-semibold mb-4">Session Statistics</h2>
+            <h2 className="text-xl font-semibold mb-4 text-ink">
+              Session Statistics
+            </h2>
             {stats && (
               <dl className="space-y-3">
                 <div className="flex justify-between">
-                  <dt className="text-gray-500">Total Participants</dt>
-                  <dd className="font-medium">{stats.totalParticipants}</dd>
+                  <dt className="text-ink-light">Total Participants</dt>
+                  <dd className="font-semibold text-ink">{stats.totalParticipants}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-gray-500">Total Questions</dt>
-                  <dd className="font-medium">{stats.totalQuestions}</dd>
+                  <dt className="text-ink-light">Total Questions</dt>
+                  <dd className="font-semibold text-ink">{stats.totalQuestions}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-gray-500">Total Answers</dt>
-                  <dd className="font-medium">{stats.totalAnswers}</dd>
+                  <dt className="text-ink-light">Total Answers</dt>
+                  <dd className="font-semibold text-ink">{stats.totalAnswers}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-gray-500">Average Accuracy</dt>
-                  <dd className="font-medium">
+                  <dt className="text-ink-light">Average Accuracy</dt>
+                  <dd className="font-semibold text-ink">
                     {stats.averageAccuracy.toFixed(1)}%
                   </dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-gray-500">Total Points Awarded</dt>
-                  <dd className="font-medium">{stats.totalPointsAwarded}</dd>
+                  <dt className="text-ink-light">Total Points Awarded</dt>
+                  <dd className="font-semibold text-ink">{stats.totalPointsAwarded}</dd>
                 </div>
               </dl>
             )}
@@ -117,27 +154,27 @@ export default async function ResultsPage({
 
         {userAnswers.length > 0 && (
           <Card variant="bordered" className="mt-8">
-            <h2 className="text-xl font-semibold mb-4">Your Answers</h2>
+            <h2 className="text-xl font-semibold mb-4 text-ink">Your Answers</h2>
             <div className="space-y-3">
               {userAnswers.map((answer: any) => (
                 <div
                   key={answer.id}
-                  className={`p-4 rounded-lg border-2 ${
+                  className={`p-4 rounded-2xl border-2 ${
                     answer.isCorrect
-                      ? "border-green-200 bg-green-50"
-                      : "border-red-200 bg-red-50"
+                      ? "border-success/30 bg-success-soft"
+                      : "border-error/30 bg-error-soft"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-medium">
+                    <span className="font-medium text-ink">
                       Q{answer.question.order}:{" "}
                       {answer.question.prompt.slice(0, 50)}
                       {answer.question.prompt.length > 50 ? "..." : ""}
                     </span>
                     <span
-                      className={
-                        answer.isCorrect ? "text-green-600" : "text-red-600"
-                      }
+                      className={`font-semibold ${
+                        answer.isCorrect ? "text-green-700" : "text-error"
+                      }`}
                     >
                       {answer.isCorrect
                         ? `+${answer.awardedPoints} pts`
@@ -149,7 +186,7 @@ export default async function ResultsPage({
             </div>
           </Card>
         )}
-      </div>
+      </main>
     </div>
   );
 }
