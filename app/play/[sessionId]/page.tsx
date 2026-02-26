@@ -7,6 +7,7 @@ import { Card } from "@/src/ui/components/Card";
 import { Timer } from "@/src/ui/components/Timer";
 import { QuestionCard } from "@/src/ui/components/QuestionCard";
 import { Leaderboard } from "@/src/ui/components/Leaderboard";
+import { cn } from "@/src/lib/utils";
 
 interface SessionInfo {
   roomCode: string;
@@ -83,38 +84,41 @@ export default function PlayPage({
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-body-muted font-medium">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen p-4 bg-gray-50">
+    <div className="min-h-screen p-4">
       <div className="max-w-2xl mx-auto">
         <header className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-lg font-semibold">
+            <h1 className="text-lg font-semibold text-body-text">
               {sessionInfo?.quizTitle || "Quiz"}
             </h1>
             <span
-              className={`px-2 py-1 rounded text-sm ${
+              className={cn(
+                "px-3 py-0.5 rounded-pill text-xs font-semibold",
                 isConnected
-                  ? "bg-green-100 text-green-800"
-                  : "bg-red-100 text-red-800"
-              }`}
+                  ? "bg-green-soft text-green-bold"
+                  : "bg-coral-soft text-coral-bold"
+              )}
             >
               {isConnected ? "Connected" : "Connecting..."}
             </span>
           </div>
           {sessionState && (
-            <span className="text-sm text-gray-500">{sessionState.status}</span>
+            <span className="text-sm text-body-muted font-medium">
+              {sessionState.status}
+            </span>
           )}
         </header>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-center">
+          <div className="mb-4 p-4 bg-coral-soft border border-coral-bold/30 text-coral-bold rounded-q-sm text-sm">
             {error}
-            <button onClick={clearError} className="ml-2 underline">
+            <button onClick={clearError} className="ml-2 underline hover:no-underline">
               Dismiss
             </button>
           </div>
@@ -123,21 +127,26 @@ export default function PlayPage({
         {(!sessionState || sessionState.status === "LOBBY") && (
           <Card variant="elevated" className="text-center py-12">
             <div className="text-5xl mb-4">⏳</div>
-            <h2 className="text-2xl font-bold mb-2">Waiting for Host</h2>
-            <p className="text-gray-600 mb-6">
+            <h2 className="text-2xl font-bold text-body-text mb-2">
+              Waiting for Host
+            </h2>
+            <p className="text-body-muted mb-6">
               The quiz will start soon. Get ready!
             </p>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500 mb-2">Players in lobby:</p>
+            <div className="bg-primary-light rounded-q-sm p-4">
+              <p className="text-sm text-body-muted mb-2 font-medium">
+                Players in lobby:
+              </p>
               <div className="flex flex-wrap justify-center gap-2">
                 {participants.map((p) => (
                   <span
                     key={p.id}
-                    className={`px-3 py-1 rounded-full text-sm ${
+                    className={cn(
+                      "px-3 py-1 rounded-pill text-sm font-medium",
                       p.email === userEmail
-                        ? "bg-primary-100 text-primary-800"
-                        : "bg-gray-200"
-                    }`}
+                        ? "bg-primary text-white"
+                        : "bg-white text-body-muted"
+                    )}
                   >
                     {p.email}
                     {p.email === userEmail && " (You)"}
@@ -150,8 +159,8 @@ export default function PlayPage({
 
         {sessionState?.status === "QUESTION" && currentQuestion && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold">
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-semibold text-body-text">
                 Question {currentQuestion.order}
               </span>
               <Timer endsAt={currentQuestion.endsAt} />
@@ -160,8 +169,10 @@ export default function PlayPage({
             {answerSubmitted ? (
               <Card variant="elevated" className="text-center py-12">
                 <div className="text-5xl mb-4">✅</div>
-                <h2 className="text-2xl font-bold mb-2">Answer Submitted!</h2>
-                <p className="text-gray-600">Waiting for the results...</p>
+                <h2 className="text-2xl font-bold text-body-text mb-2">
+                  Answer Submitted!
+                </h2>
+                <p className="text-body-muted">Waiting for the results...</p>
               </Card>
             ) : (
               <QuestionCard
@@ -196,7 +207,9 @@ export default function PlayPage({
         {sessionState?.status === "FINISHED" && (
           <Card variant="elevated" className="text-center py-12">
             <div className="text-5xl mb-4">🎉</div>
-            <h2 className="text-3xl font-bold mb-4">Quiz Complete!</h2>
+            <h2 className="text-3xl font-bold text-body-text mb-4">
+              Quiz Complete!
+            </h2>
 
             {leaderboard.length > 0 && (
               <div className="mb-6">
@@ -208,10 +221,8 @@ export default function PlayPage({
             )}
 
             <button
-              onClick={() =>
-                router.push(`/results/${params.sessionId}`)
-              }
-              className="text-primary-600 hover:underline"
+              onClick={() => router.push(`/results/${params.sessionId}`)}
+              className="text-primary font-semibold hover:underline"
             >
               View Detailed Results
             </button>

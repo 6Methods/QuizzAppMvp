@@ -34,21 +34,26 @@ export function Leaderboard({
 
   return (
     <div
-      className={cn("bg-white rounded-xl shadow-md overflow-hidden", className)}
+      className={cn(
+        "bg-white rounded-q-md shadow-card overflow-hidden",
+        className
+      )}
     >
-      <div className="bg-primary-600 px-4 py-3">
-        <h3 className="text-lg font-semibold text-white">Leaderboard</h3>
+      <div className="bg-primary px-5 py-4">
+        <h3 className="text-base font-semibold text-white">Leaderboard</h3>
       </div>
-      <ul className="divide-y divide-gray-200">
+      <ul className="divide-y divide-primary-light">
         {entries.length === 0 ? (
-          <li className="px-4 py-3 text-gray-500 text-center">No scores yet</li>
+          <li className="px-5 py-4 text-body-muted text-center text-sm">
+            No scores yet
+          </li>
         ) : (
           entries.map((entry) => (
             <li
               key={entry.email}
               className={cn(
-                "px-4 py-3 flex items-center justify-between transition-colors",
-                entry.email === currentUserEmail && "bg-primary-50"
+                "px-5 py-3 flex items-center justify-between transition-all duration-300 ease-quiz",
+                entry.email === currentUserEmail && "bg-primary-light"
               )}
             >
               <div className="flex items-center gap-3">
@@ -57,15 +62,17 @@ export function Leaderboard({
                 </span>
                 <span
                   className={cn(
-                    "font-medium",
-                    entry.email === currentUserEmail && "text-primary-700"
+                    "font-medium text-sm text-body-text",
+                    entry.email === currentUserEmail && "text-primary"
                   )}
                 >
                   {entry.email}
                   {entry.email === currentUserEmail && " (You)"}
                 </span>
               </div>
-              <span className="font-bold text-lg">{entry.points}</span>
+              <span className="font-bold text-base text-body-text">
+                {entry.points}
+              </span>
             </li>
           ))
         )}

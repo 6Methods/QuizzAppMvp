@@ -202,10 +202,13 @@ export default function EditQuizPage({
     setQuiz({ ...quiz, questions: newQuestions });
   };
 
+  const inputBase =
+    "w-full px-4 py-2.5 border-2 border-primary-light rounded-q-sm bg-white text-body-text placeholder:text-body-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 ease-quiz";
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-body-muted font-medium">Loading...</p>
       </div>
     );
   }
@@ -213,7 +216,7 @@ export default function EditQuizPage({
   if (!quiz) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-red-500">{error || "Quiz not found"}</p>
+        <p className="text-coral-bold">{error || "Quiz not found"}</p>
       </div>
     );
   }
@@ -222,7 +225,7 @@ export default function EditQuizPage({
     <div className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
         <header className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Edit Quiz</h1>
+          <h1 className="text-3xl font-bold text-body-text">Edit Quiz</h1>
           <div className="flex gap-3">
             <Link href="/quizzes">
               <Button variant="ghost">Back</Button>
@@ -232,16 +235,18 @@ export default function EditQuizPage({
         </header>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg">
+          <div className="mb-4 p-4 bg-coral-soft border border-coral-bold/30 text-coral-bold rounded-q-sm text-sm">
             {error}
-            <button onClick={() => setError("")} className="ml-2 underline">
+            <button onClick={() => setError("")} className="ml-2 underline hover:no-underline">
               Dismiss
             </button>
           </div>
         )}
 
         <Card variant="bordered" className="mb-6">
-          <h2 className="text-lg font-semibold mb-4">Quiz Details</h2>
+          <h2 className="text-lg font-semibold text-body-text mb-4">
+            Quiz Details
+          </h2>
           <div className="space-y-4">
             <Input
               label="Title"
@@ -250,7 +255,7 @@ export default function EditQuizPage({
               onBlur={updateQuizDetails}
             />
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-body-text mb-1.5">
                 Description
               </label>
               <textarea
@@ -260,7 +265,7 @@ export default function EditQuizPage({
                 }
                 onBlur={updateQuizDetails}
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                className={`${inputBase} resize-none`}
               />
             </div>
           </div>
@@ -268,7 +273,7 @@ export default function EditQuizPage({
 
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">
+            <h2 className="text-lg font-semibold text-body-text">
               Questions ({quiz.questions.length})
             </h2>
             <Button onClick={addQuestion} variant="secondary">
@@ -280,7 +285,9 @@ export default function EditQuizPage({
             <Card key={question.id || qIndex} variant="bordered">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-medium">Question {qIndex + 1}</span>
+                  <span className="font-semibold text-body-text">
+                    Question {qIndex + 1}
+                  </span>
                   <div className="flex gap-2">
                     <select
                       value={question.type}
@@ -289,7 +296,7 @@ export default function EditQuizPage({
                           type: e.target.value as "TEXT" | "IMAGE",
                         })
                       }
-                      className="px-2 py-1 border rounded text-sm"
+                      className="px-3 py-1.5 border-2 border-primary-light rounded-q-sm bg-white text-body-text text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 ease-quiz"
                     >
                       <option value="TEXT">Text</option>
                       <option value="IMAGE">Image</option>
@@ -326,7 +333,7 @@ export default function EditQuizPage({
 
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-body-text mb-1.5">
                       Time Limit (sec)
                     </label>
                     <input
@@ -339,11 +346,11 @@ export default function EditQuizPage({
                       }
                       min={5}
                       max={300}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      className={inputBase}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-body-text mb-1.5">
                       Points
                     </label>
                     <input
@@ -356,11 +363,11 @@ export default function EditQuizPage({
                       }
                       min={1}
                       max={1000}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      className={inputBase}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-body-text mb-1.5">
                       Selection
                     </label>
                     <select
@@ -370,7 +377,7 @@ export default function EditQuizPage({
                           isMulti: e.target.value === "multi",
                         })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      className={inputBase}
                     >
                       <option value="single">Single choice</option>
                       <option value="multi">Multiple choice</option>
@@ -380,7 +387,7 @@ export default function EditQuizPage({
 
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-sm font-medium text-gray-700">
+                    <label className="text-sm font-medium text-body-text">
                       Options
                     </label>
                     <Button
@@ -413,7 +420,7 @@ export default function EditQuizPage({
                               updateQuestion(qIndex, { options: newOptions });
                             }
                           }}
-                          className="h-4 w-4"
+                          className="h-4 w-4 accent-primary"
                         />
                         <input
                           type="text"
@@ -424,7 +431,7 @@ export default function EditQuizPage({
                             })
                           }
                           placeholder={`Option ${oIndex + 1}`}
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+                          className={`flex-1 ${inputBase}`}
                         />
                         {question.options.length > 2 && (
                           <Button
@@ -432,7 +439,7 @@ export default function EditQuizPage({
                             size="sm"
                             onClick={() => removeOption(qIndex, oIndex)}
                           >
-                            X
+                            ✕
                           </Button>
                         )}
                       </div>
@@ -453,7 +460,7 @@ export default function EditQuizPage({
 
           {quiz.questions.length === 0 && (
             <Card variant="bordered" className="text-center py-8">
-              <p className="text-gray-500 mb-4">No questions yet</p>
+              <p className="text-body-muted mb-4">No questions yet</p>
               <Button onClick={addQuestion}>Add Your First Question</Button>
             </Card>
           )}

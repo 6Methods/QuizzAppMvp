@@ -50,8 +50,12 @@ export default function JoinPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <Card variant="elevated" className="w-full max-w-md text-center">
-        <h1 className="text-3xl font-bold mb-2">Join Quiz</h1>
-        <p className="text-gray-600 mb-8">Enter the room code to join</p>
+        <div className="flex items-center justify-center gap-2 mb-8">
+          <span className="w-2.5 h-2.5 bg-primary rounded-full inline-block" />
+          <span className="text-xl font-bold text-primary">QuizFlow</span>
+        </div>
+        <h1 className="text-3xl font-bold text-body-text mb-2">Join Quiz</h1>
+        <p className="text-body-muted mb-8">Enter the room code to join</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -60,14 +64,16 @@ export default function JoinPage() {
               value={roomCode}
               onChange={handleInputChange}
               placeholder="ABCD12"
-              className="w-full text-center text-4xl font-mono font-bold tracking-widest px-4 py-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-primary-500 uppercase"
+              className="w-full text-center text-4xl font-mono font-bold tracking-widest px-4 py-4 border-2 border-primary-light rounded-q-md bg-white text-body-text placeholder:text-body-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 ease-quiz uppercase"
               maxLength={6}
               autoFocus
             />
-            <p className="text-sm text-gray-500 mt-2">6-character room code</p>
+            <p className="text-sm text-body-muted mt-2">
+              6-character room code
+            </p>
           </div>
 
-          {error && <p className="text-red-600 text-sm">{error}</p>}
+          {error && <p className="text-coral-bold text-sm">{error}</p>}
 
           <Button
             type="submit"
@@ -80,8 +86,11 @@ export default function JoinPage() {
           </Button>
         </form>
 
-        <div className="mt-8 pt-6 border-t">
-          <Link href="/dashboard" className="text-primary-600 hover:underline">
+        <div className="mt-8 pt-6 border-t border-primary-light">
+          <Link
+            href="/dashboard"
+            className="text-primary font-semibold hover:underline text-sm"
+          >
             Back to Dashboard
           </Link>
         </div>
