@@ -45,7 +45,13 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <Card variant="elevated" className="w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Sign In</h1>
+        <div className="flex items-center justify-center gap-2 mb-8">
+          <span className="w-2.5 h-2.5 bg-primary rounded-full inline-block" />
+          <span className="text-xl font-bold text-primary">QuizFlow</span>
+        </div>
+        <h1 className="text-2xl font-bold text-center text-body-text mb-6">
+          Sign In
+        </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
@@ -68,31 +74,33 @@ export default function LoginPage() {
             autoComplete="current-password"
           />
 
-          {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+          {error && (
+            <p className="text-coral-bold text-sm text-center">{error}</p>
+          )}
 
           <Button type="submit" isLoading={isLoading} className="w-full">
             Sign In
           </Button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-gray-600">
+        <p className="mt-4 text-center text-sm text-body-muted">
           Don&apos;t have an account?{" "}
           <Link
             href="/auth/register"
-            className="text-primary-600 hover:underline"
+            className="text-primary font-semibold hover:underline"
           >
             Register
           </Link>
         </p>
 
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <p className="text-xs text-gray-500 text-center mb-2">
+        <div className="mt-6 p-4 bg-primary-light rounded-q-sm">
+          <p className="text-xs text-body-muted text-center mb-2 font-medium">
             Test accounts:
           </p>
-          <p className="text-xs text-gray-600 text-center">
+          <p className="text-xs text-body-text text-center">
             Organizer: organizer@test.com / 123456
           </p>
-          <p className="text-xs text-gray-600 text-center">
+          <p className="text-xs text-body-text text-center">
             Participant: participant@test.com / 123456
           </p>
         </div>

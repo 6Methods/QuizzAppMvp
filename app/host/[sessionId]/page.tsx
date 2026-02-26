@@ -7,6 +7,7 @@ import { Button } from "@/src/ui/components/Button";
 import { Card } from "@/src/ui/components/Card";
 import { Timer } from "@/src/ui/components/Timer";
 import { Leaderboard } from "@/src/ui/components/Leaderboard";
+import { cn } from "@/src/lib/utils";
 
 interface SessionData {
   id: string;
@@ -83,7 +84,7 @@ export default function HostPage({
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Loading session...</p>
+        <p className="text-body-muted font-medium">Loading session...</p>
       </div>
     );
   }
@@ -92,7 +93,7 @@ export default function HostPage({
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Card variant="elevated" className="text-center p-8">
-          <p className="text-red-500 mb-4">
+          <p className="text-coral-bold mb-4">
             {loadError || "Session not found"}
           </p>
           <Button onClick={() => router.push("/dashboard")}>
@@ -109,21 +110,24 @@ export default function HostPage({
   const totalQuestions = sessionData.quiz.questions.length;
 
   return (
-    <div className="min-h-screen p-8 bg-gray-50">
+    <div className="min-h-screen p-8">
       <div className="max-w-6xl mx-auto">
         <header className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold">{sessionData.quiz.title}</h1>
+            <h1 className="text-2xl font-bold text-body-text">
+              {sessionData.quiz.title}
+            </h1>
             <div className="flex items-center gap-4 mt-1">
-              <span className="text-lg font-mono bg-primary-100 text-primary-800 px-3 py-1 rounded">
+              <span className="text-lg font-mono bg-primary-light text-primary px-3 py-1 rounded-q-sm font-bold">
                 Room: {sessionData.roomCode}
               </span>
               <span
-                className={`px-2 py-1 rounded text-sm ${
+                className={cn(
+                  "px-3 py-0.5 rounded-pill text-xs font-semibold",
                   isConnected
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800"
-                }`}
+                    ? "bg-green-soft text-green-bold"
+                    : "bg-coral-soft text-coral-bold"
+                )}
               >
                 {isConnected ? "Connected" : "Disconnected"}
               </span>
@@ -137,9 +141,9 @@ export default function HostPage({
         </header>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg">
+          <div className="mb-4 p-4 bg-coral-soft border border-coral-bold/30 text-coral-bold rounded-q-sm text-sm">
             {error}
-            <button onClick={clearError} className="ml-2 underline">
+            <button onClick={clearError} className="ml-2 underline hover:no-underline">
               Dismiss
             </button>
           </div>
@@ -149,14 +153,16 @@ export default function HostPage({
           <div className="lg:col-span-2 space-y-6">
             {(!sessionState || sessionState.status === "LOBBY") && (
               <Card variant="elevated" className="text-center py-12">
-                <h2 className="text-2xl font-bold mb-4">Waiting for Players</h2>
-                <p className="text-gray-600 mb-2">
+                <h2 className="text-2xl font-bold text-body-text mb-4">
+                  Waiting for Players
+                </h2>
+                <p className="text-body-muted mb-2">
                   Share the room code with participants:
                 </p>
-                <p className="text-5xl font-mono font-bold text-primary-600 mb-6">
+                <p className="text-5xl font-mono font-bold text-primary mb-6 tracking-widest">
                   {sessionData.roomCode}
                 </p>
-                <p className="text-gray-500 mb-6">
+                <p className="text-body-muted mb-6">
                   {participants.length} participant
                   {participants.length !== 1 ? "s" : ""} joined
                 </p>
@@ -168,7 +174,7 @@ export default function HostPage({
                   Start Quiz
                 </Button>
                 {totalQuestions === 0 && (
-                  <p className="text-red-500 text-sm mt-2">
+                  <p className="text-coral-bold text-sm mt-2">
                     Quiz has no questions!
                   </p>
                 )}
@@ -178,7 +184,7 @@ export default function HostPage({
             {sessionState?.status === "QUESTION" && currentQuestion && (
               <Card variant="elevated">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-lg font-semibold">
+                  <span className="text-lg font-semibold text-body-text">
                     Question {currentQuestion.order} of {totalQuestions}
                   </span>
                   <Timer
@@ -187,7 +193,7 @@ export default function HostPage({
                   />
                 </div>
 
-                <h2 className="text-2xl font-bold mb-4">
+                <h2 className="text-2xl font-bold text-body-text mb-4">
                   {currentQuestion.prompt}
                 </h2>
 
@@ -195,7 +201,7 @@ export default function HostPage({
                   <img
                     src={currentQuestion.imageUrl}
                     alt="Question"
-                    className="max-h-64 mx-auto rounded-lg mb-4"
+                    className="max-h-64 mx-auto rounded-q-md mb-4"
                   />
                 )}
 
@@ -203,7 +209,7 @@ export default function HostPage({
                   {currentQuestion.options.map((option) => (
                     <div
                       key={option.id}
-                      className="p-4 bg-gray-100 rounded-lg font-medium"
+                      className="p-4 bg-primary-light rounded-q-sm font-medium text-body-text"
                     >
                       {option.text}
                     </div>
@@ -223,12 +229,12 @@ export default function HostPage({
             {sessionState?.status === "REVEAL" && currentQuestionData && (
               <Card variant="elevated">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-lg font-semibold">
+                  <span className="text-lg font-semibold text-body-text">
                     Question {sessionState.currentQuestionOrder} - Results
                   </span>
                 </div>
 
-                <h2 className="text-2xl font-bold mb-4">
+                <h2 className="text-2xl font-bold text-body-text mb-4">
                   {currentQuestionData.prompt}
                 </h2>
 
@@ -236,11 +242,12 @@ export default function HostPage({
                   {currentQuestionData.options.map((option) => (
                     <div
                       key={option.id}
-                      className={`p-4 rounded-lg font-medium border-2 ${
+                      className={cn(
+                        "p-4 rounded-q-sm font-medium border-2",
                         option.isCorrect
-                          ? "bg-green-100 border-green-500 text-green-800"
-                          : "bg-gray-100 border-gray-200"
-                      }`}
+                          ? "bg-green-soft border-green-bold text-green-bold"
+                          : "bg-primary-light border-transparent text-body-muted"
+                      )}
                     >
                       {option.text}
                       {option.isCorrect && " ✓"}
@@ -265,8 +272,10 @@ export default function HostPage({
 
             {sessionState?.status === "FINISHED" && (
               <Card variant="elevated" className="text-center py-12">
-                <h2 className="text-3xl font-bold mb-4">Quiz Finished!</h2>
-                <p className="text-gray-600 mb-6">
+                <h2 className="text-3xl font-bold text-body-text mb-4">
+                  Quiz Finished!
+                </h2>
+                <p className="text-body-muted mb-6">
                   Thank you for hosting this quiz session.
                 </p>
                 <div className="flex justify-center gap-3">
@@ -290,19 +299,19 @@ export default function HostPage({
 
           <div className="space-y-6">
             <Card variant="bordered">
-              <h3 className="font-semibold mb-3">
+              <h3 className="font-semibold text-body-text mb-3">
                 Participants ({participants.length})
               </h3>
               <ul className="space-y-2 max-h-48 overflow-y-auto">
                 {participants.length === 0 ? (
-                  <li className="text-gray-500 text-sm">
+                  <li className="text-body-muted text-sm">
                     Waiting for participants...
                   </li>
                 ) : (
                   participants.map((p) => (
                     <li
                       key={p.id}
-                      className="text-sm bg-gray-50 px-3 py-2 rounded"
+                      className="text-sm bg-primary-light px-3 py-2 rounded-q-sm text-body-text"
                     >
                       {p.email}
                     </li>

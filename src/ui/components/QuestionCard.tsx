@@ -30,12 +30,13 @@ export function QuestionCard({
   revealedCorrectIds,
   selectedIds: initialSelectedIds,
 }: QuestionCardProps) {
-  const [selected, setSelected] = useState<string[]>(initialSelectedIds || []);
+  const [selected, setSelected] = useState<string[]>(
+    initialSelectedIds || []
+  );
   const isRevealed = !!revealedCorrectIds;
 
   const toggleOption = (id: string) => {
     if (disabled || isRevealed) return;
-
     if (isMulti) {
       setSelected((prev) =>
         prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
@@ -56,68 +57,99 @@ export function QuestionCard({
     const isCorrect = revealedCorrectIds?.includes(optionId);
 
     if (isRevealed) {
-      if (isCorrect) {
-        return "border-green-500 bg-green-50 text-green-800";
-      }
-      if (isSelected && !isCorrect) {
-        return "border-red-500 bg-red-50 text-red-800";
-      }
-      return "border-gray-200 bg-gray-50 text-gray-500";
+      if (isCorrect) return "border-green-bold bg-green-soft text-green-bold";
+      if (isSelected && !isCorrect)
+        return "border-coral-bold bg-coral-soft text-coral-bold";
+      return "border-transparent bg-app-bg opacity-60";
     }
 
-    if (isSelected) {
-      return "border-primary-500 bg-primary-50 text-primary-800";
-    }
-
-    return "border-gray-200 hover:border-primary-300 hover:bg-primary-50";
+    if (isSelected) return "border-primary bg-primary-light";
+    return "border-transparent bg-app-bg hover:bg-white hover:-translate-y-1 hover:shadow-hover";
   };
 
+  const optionLetters = ["A", "B", "C", "D", "E", "F"];
+
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">{prompt}</h2>
+    <div className="bg-white rounded-q-xl shadow-soft p-8 flex flex-col">
+      <h2 className="text-xl md:text-2xl font-semibold text-body-text mb-8 leading-snug">
+        {prompt}
+      </h2>
 
       {imageUrl && (
-        <div className="mb-4 flex justify-center">
+        <div className="mb-6 flex justify-center">
           <img
             src={imageUrl}
             alt="Question"
-            className="max-h-64 rounded-lg object-contain"
+            className="max-h-64 rounded-q-md object-contain"
           />
         </div>
       )}
 
       {isMulti && !isRevealed && (
-        <p className="text-sm text-gray-500 mb-3">Select all that apply</p>
+        <p className="text-sm text-body-muted mb-4 font-medium">
+          Select all that apply
+        </p>
       )}
 
-      <div className="space-y-3 mb-6">
-        {options.map((option) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {options.map((option, idx) => (
           <button
             key={option.id}
             onClick={() => toggleOption(option.id)}
             disabled={disabled || isRevealed}
             className={cn(
-              "w-full p-4 text-left border-2 rounded-lg transition-all",
+              "p-6 text-left border-2 rounded-q-md transition-all duration-300 ease-quiz flex items-center justify-between",
               getOptionStyle(option.id),
-              !disabled && !isRevealed && "cursor-pointer"
+              !disabled && !isRevealed ? "cursor-pointer" : "cursor-default"
             )}
           >
-            <span className="font-medium">{option.text}</span>
-            {isRevealed && revealedCorrectIds?.includes(option.id) && (
-              <span className="ml-2">✓</span>
+            <span className="font-medium text-base">{option.text}</span>
+            {isRevealed && revealedCorrectIds?.includes(option.id) ? (
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            ) : (
+              !isRevealed && (
+                <span className="text-xs font-semibold text-body-muted opacity-50">
+                  {optionLetters[idx]}
+                </span>
+              )
             )}
           </button>
         ))}
       </div>
 
       {!isRevealed && (
-        <Button
-          onClick={handleSubmit}
-          disabled={selected.length === 0 || disabled}
-          className="w-full"
-        >
-          Submit Answer
-        </Button>
+        <div className="flex justify-end">
+          <Button
+            onClick={handleSubmit}
+            disabled={selected.length === 0 || disabled}
+            size="lg"
+          >
+            Submit Answer
+            <svg
+              className="ml-3 w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </Button>
+        </div>
       )}
     </div>
   );

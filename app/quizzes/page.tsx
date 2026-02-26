@@ -23,8 +23,8 @@ export default async function QuizzesPage() {
       <div className="max-w-4xl mx-auto">
         <header className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">My Quizzes</h1>
-            <p className="text-gray-600">Manage and create quizzes</p>
+            <h1 className="text-3xl font-bold text-body-text">My Quizzes</h1>
+            <p className="text-body-muted">Manage and create quizzes</p>
           </div>
           <div className="flex gap-3">
             <Link href="/dashboard">
@@ -39,8 +39,10 @@ export default async function QuizzesPage() {
         {quizzes.length === 0 ? (
           <Card variant="bordered" className="text-center py-12">
             <div className="text-5xl mb-4">📋</div>
-            <h2 className="text-xl font-semibold mb-2">No quizzes yet</h2>
-            <p className="text-gray-600 mb-6">
+            <h2 className="text-xl font-semibold text-body-text mb-2">
+              No quizzes yet
+            </h2>
+            <p className="text-body-muted mb-6">
               Create your first quiz to start hosting sessions
             </p>
             <Link href="/quizzes/new">
@@ -53,15 +55,17 @@ export default async function QuizzesPage() {
               <Card
                 key={quiz.id}
                 variant="bordered"
-                className="hover:shadow-md transition-shadow"
+                className="hover:shadow-soft transition-all duration-300 ease-quiz"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-xl font-semibold">{quiz.title}</h2>
+                    <h2 className="text-xl font-semibold text-body-text">
+                      {quiz.title}
+                    </h2>
                     {quiz.description && (
-                      <p className="text-gray-600 mt-1">{quiz.description}</p>
+                      <p className="text-body-muted mt-1">{quiz.description}</p>
                     )}
-                    <div className="flex gap-4 mt-2 text-sm text-gray-500">
+                    <div className="flex gap-4 mt-2 text-sm text-body-muted">
                       <span>{quiz._count.questions} questions</span>
                       <span>{quiz._count.sessions} sessions</span>
                       <span>

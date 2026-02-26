@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-outfit",
+});
 
 export const metadata: Metadata = {
-  title: "Realtime Quiz App",
+  title: "QuizFlow",
   description: "Interactive real-time quiz application",
 };
 
@@ -16,7 +20,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body
+        className={`${outfit.variable} font-sans bg-app-bg text-body-text antialiased min-h-screen`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

@@ -46,7 +46,13 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <Card variant="elevated" className="w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Create Account</h1>
+        <div className="flex items-center justify-center gap-2 mb-8">
+          <span className="w-2.5 h-2.5 bg-primary rounded-full inline-block" />
+          <span className="text-xl font-bold text-primary">QuizFlow</span>
+        </div>
+        <h1 className="text-2xl font-bold text-center text-body-text mb-6">
+          Create Account
+        </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
@@ -71,49 +77,54 @@ export default function RegisterPage() {
           />
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-body-text mb-2">
               I want to
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setRole("PARTICIPANT")}
-                className={`p-4 border-2 rounded-lg text-center transition-colors ${
+                className={`p-4 border-2 rounded-q-md text-center transition-all duration-300 ease-quiz ${
                   role === "PARTICIPANT"
-                    ? "border-primary-500 bg-primary-50 text-primary-700"
-                    : "border-gray-200 hover:border-gray-300"
+                    ? "border-primary bg-primary-light text-primary"
+                    : "border-primary-light bg-white hover:border-primary text-body-muted"
                 }`}
               >
                 <div className="text-2xl mb-1">🎮</div>
-                <div className="font-medium">Play Quizzes</div>
-                <div className="text-xs text-gray-500">Participant</div>
+                <div className="font-semibold text-sm">Play Quizzes</div>
+                <div className="text-xs text-body-muted mt-0.5">Participant</div>
               </button>
               <button
                 type="button"
                 onClick={() => setRole("ORGANIZER")}
-                className={`p-4 border-2 rounded-lg text-center transition-colors ${
+                className={`p-4 border-2 rounded-q-md text-center transition-all duration-300 ease-quiz ${
                   role === "ORGANIZER"
-                    ? "border-primary-500 bg-primary-50 text-primary-700"
-                    : "border-gray-200 hover:border-gray-300"
+                    ? "border-primary bg-primary-light text-primary"
+                    : "border-primary-light bg-white hover:border-primary text-body-muted"
                 }`}
               >
                 <div className="text-2xl mb-1">📋</div>
-                <div className="font-medium">Create Quizzes</div>
-                <div className="text-xs text-gray-500">Organizer</div>
+                <div className="font-semibold text-sm">Create Quizzes</div>
+                <div className="text-xs text-body-muted mt-0.5">Organizer</div>
               </button>
             </div>
           </div>
 
-          {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+          {error && (
+            <p className="text-coral-bold text-sm text-center">{error}</p>
+          )}
 
           <Button type="submit" isLoading={isLoading} className="w-full">
             Create Account
           </Button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-gray-600">
+        <p className="mt-4 text-center text-sm text-body-muted">
           Already have an account?{" "}
-          <Link href="/auth/login" className="text-primary-600 hover:underline">
+          <Link
+            href="/auth/login"
+            className="text-primary font-semibold hover:underline"
+          >
             Sign In
           </Link>
         </p>
